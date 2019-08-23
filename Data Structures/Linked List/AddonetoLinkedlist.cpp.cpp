@@ -23,16 +23,18 @@ void printll(node *head)
         head=head->next;
     }
 }
-void push(struct node** head,int data)
+node* push(node* head,int data)
 {
+  node*ptr=head;
   node *newnode=(node*)malloc(sizeof(node));
   newnode->data=data;
-  while((*head)->next)
+  while(ptr->next)
   {
-        *head=(*head)->next;
+        ptr=ptr->next;
   }
-  (*head)->next=newnode;
+  ptr->next=newnode;
   newnode->next=NULL;
+  return head;
 }
 
 node* reverse(node*head)
@@ -80,14 +82,26 @@ node* addoneA(node* head)
 
 int main()
 {
-    //int n;
-    //cout <<"Enter the length of the number";
-    //cin>>n;
-    //while(n)
-    node* head=newnode(1);
-    head->next=newnode(2);
-    head->next->next=newnode(3);
-    head->next->next->next=newnode(4);
+    int n,x[20],i=1;
+    cout <<"Enter the length of the number";
+    cin>>n;
+    node* head=NULL,*ptr;
+    cout<<"\nEnter the number(with spaces)";
+    cin>>x[0];
+    head=newnode(x[0]);
+    ptr=head;
+    while(n-1)
+    {
+        --n;
+        cin>>x[i];
+        head->next=newnode(x[i]);
+        i+=1;
+    }
+    head=ptr;
+//    node* head=newnode(1);
+//    head->next=newnode(2);
+//    head->next->next=newnode(3);
+//    head->next->next->next=newnode(4);
     cout<<"BEFORE:\n";
     printll(head);
     head=addoneA(head);
