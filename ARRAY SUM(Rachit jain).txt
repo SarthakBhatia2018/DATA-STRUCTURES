@@ -1,0 +1,138 @@
+    #include <iostream>
+    #include<map>
+    #include<algorithm>
+    #include <vector>
+    #include <set>
+    using namespace std;
+bool f(int x, int y)
+{
+    return x > y;
+}
+void vectordemo()
+{
+    vector<int> v = { 100,1242,24,12,4,12,512,100,152 };
+    cout << endl;
+    //auto i1 = lower_bound(v.begin(), v.end(), 1242);//>=24
+    //auto i2 = upper_bound(v.begin(), v.end(), 1242);//>24
+    //cout << endl << *i1 << "" << *i2 << endl;
+    sort(v.begin(), v.end(),greater<int>());
+    //for (auto &i : v)//REference
+    //{
+    //    ++i;
+    //    cout << i << " ";
+    //}
+    //cout << endl;
+    for (auto i : v)
+    {
+        cout << i << " ";
+    }
+    cout << endl;
+}
+void setDemo()//insertion time complexity log(n)
+//already sorted
+{
+    set <int> s;
+    s.insert(12);
+    s.insert(2);
+    s.insert(-12);
+    s.insert(0);
+    for (int i : s)
+        cout << i << " ";
+    //cout << (s.find(2)!=s.end());
+    //in vector upper_bound and lower bound are slightly diff lower_bound(V.begin(),v.end(),24)
+    auto lb = s.lower_bound(12);//here the iterators
+    auto ub = s.upper_bound(12);
+    cout << endl<<*lb<<endl;
+    if (ub == s.end())
+        cout << "oops!";
+    else
+        cout << *ub;
+    cout << endl;
+}
+void mapDemo()
+{
+    map<int, int> m;//insertion time complexity O(log(n))
+    m[1] = 24;
+    m[2] = 14;
+    m[5] = 254;
+    m[25] = 274;
+    map<char, int> cnt;
+    string s = "Sarthak Bhatia";
+    for (char c : s)
+        cnt[c]++;
+    map<char, int>::iterator i;
+    for (i=cnt.begin();i!=cnt.end();++i)
+        cout <<"'"<< i->first <<"'"<< " " << i->second << endl;
+}
+void powerstl()
+{
+    set<pair<int, int>> s;
+    s.insert({2,3});
+    s.insert({ 10,40});
+    s.insert({47,400});
+    s.insert({450,500});
+    int point = 47;
+    auto itr = s.upper_bound({point,INT_MAX});
+    if (itr == s.begin())
+    {
+        cout << "Point not in range";
+        return;
+    }
+    --itr;
+    if (itr->first <= point && itr->second >= point)
+        cout << "Point lies in the interval";
+    else
+        cout << "Point not in range";
+
+}
+int main()
+{
+    int n;
+    cin >> n;
+    vector<int> v(n, 0);
+    long long sum = 0;
+    for (int i = 0; i < n; ++i)
+        cin >> v[i],sum+=v[i];
+    if (sum & 1)
+    {
+        cout << "NO\n";
+        return 0;
+    }
+    map<long long, int> first, second;
+    first[v[0]]=1;
+    for (int i = 1; i < n; ++i)
+        second[v[i]]++;
+    long long sdash = 0;
+    //......S/2.....
+    for (int i = 0; i < n; ++i)
+    {
+        sdash += v[i];
+        if (sdash == sum / 2)
+        {
+            cout << "YES\n";
+            return 0;
+        }
+        else if (sdash < sum / 2)
+        {
+            long long x = sum / 2 - sdash;
+            if (second[x] > 0)
+            {
+                cout << "YES\n";
+                return 0;
+            }
+        }
+        else
+        {
+            long long x = sdash - sum / 2;
+            if (first[x] > 0)
+            {
+                cout << "YES\n";
+                return 0;
+            }
+        }
+        first[v[i+1]]++;
+        second[v[i+1]]--;
+    }
+    cout << "NO\n";
+    return 0;
+}
